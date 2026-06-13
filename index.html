@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        islamicGreen: '#013220',
+                        darkBg: '#121212',
+                    },
+                    fontFamily: {
+                        arabic: ['Amiri', 'serif'],
+                        elegant: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 2s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .pattern-bg {
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-darkBg text-gray-800 dark:text-gray-200 transition-colors duration-300 pattern-bg font-elegant">
+
+    <audio id="nasheed" loop>
+        <source src="https://www.soundhelix.com/architecture/NasheedMock.mp3" type="audio/mpeg">
+    </audio>
+
+    <nav class="fixed top-0 w-full p-4 flex justify-between items-center bg-white/80 dark:bg-black/80 backdrop-blur-sm z-50 shadow-sm">
+        <button onclick="toggleMusic()" id="musicBtn" class="text-islamicGreen dark:text-gold hover:scale-110 transition"><i class="fa-solid fa-music"></i> Play Nasheed</button>
+        <div class="space-x-4">
+            <button onclick="toggleTheme()" class="text-xl"><i class="fa-solid fa-moon text-islamicGreen dark:text-gold"></i></button>
+            <button onclick="downloadPDF()" class="text-islamicGreen dark:text-gold"><i class="fa-solid fa-download"></i> PDF</button>
+            <button onclick="toggleAdmin()" class="text-xs text-gray-400">Admin</button>
+        </div>
+    </nav>
+
+    <main id="invite-content" class="max-w-3xl mx-auto mt-20 p-6 bg-white dark:bg-gray-900 shadow-2xl rounded-t-full border-t-8 border-gold fade-in">
+        
+        <div class="text-center mt-10 mb-8">
+            <p class="font-arabic text-3xl md:text-5xl text-islamicGreen dark:text-gold">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+        </div>
+
+        <div class="text-center space-y-4 my-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-islamicGreen dark:text-white" contenteditable="true">Omar</h1>
+            <p class="text-2xl text-gold">&</p>
+            <h1 class="text-4xl md:text-6xl font-bold text-islamicGreen dark:text-white" contenteditable="true">Aisha</h1>
+            <p class="text-sm uppercase tracking-widest mt-4 text-gray-500">Are getting married</p>
+        </div>
+
+        <div class="text-center my-12 p-8 border-y border-gold/30">
+            <h2 class="text-2xl font-bold mb-4">Wedding Details</h2>
+            <p class="text-lg"><i class="fa-regular fa-calendar text-gold"></i> Saturday, August 25, 2026</p>
+            <p class="font-arabic text-lg text-islamicGreen dark:text-gold my-2">12 Rabi al-Awwal 1448 AH</p>
+            <p class="text-lg"><i class="fa-regular fa-clock text-gold"></i> 6:00 PM Onwards</p>
+            <p class="text-lg mt-4"><i class="fa-solid fa-location-dot text-gold"></i> Grand Islamic Center Banquet Hall</p>
+            <p class="text-sm text-gray-500">123 Peace Avenue, City, State</p>
+            <a href="https://maps.google.com" target="_blank" class="inline-block mt-4 px-6 py-2 bg-islamicGreen text-white rounded-full hover:bg-gold transition shadow-lg">View Venue on Map</a>
+        </div>
+
+        <div class="text-center my-12">
+            <h3 class="text-xl mb-6 tracking-wider">Time Until We Say "I Do"</h3>
+            <div class="flex justify-center gap-4 text-center">
+                <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg w-20 shadow-inner">
+                    <span id="days" class="text-2xl md:text-4xl font-bold text-gold">00</span><p class="text-xs">Days</p>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg w-20 shadow-inner">
+                    <span id="hours" class="text-2xl md:text-4xl font-bold text-gold">00</span><p class="text-xs">Hours</p>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg w-20 shadow-inner">
+                    <span id="minutes" class="text-2xl md:text-4xl font-bold text-gold">00</span><p class="text-xs">Mins</p>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg w-20 shadow-inner">
+                    <span id="seconds" class="text-2xl md:text-4xl font-bold text-gold">00</span><p class="text-xs">Secs</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-islamicGreen/5 dark:bg-gray-800 p-8 rounded-2xl text-center my-12 border border-gold/20">
+            <h2 class="text-3xl font-bold mb-6 text-islamicGreen dark:text-gold">RSVP</h2>
+            <p class="mb-6">Will you attend the wedding?</p>
+            <div class="flex justify-center gap-4 mb-6">
+                <button onclick="showRSVP(true)" class="px-6 py-2 bg-islamicGreen text-white rounded-full hover:bg-gold transition shadow">Yes, I Will Attend</button>
+                <button onclick="showRSVP(false)" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-full hover:bg-red-400 hover:text-white transition shadow">Sorry, I Cannot</button>
+            </div>
+
+            <form id="rsvpForm" class="hidden flex flex-col gap-4 max-w-sm mx-auto text-left" onsubmit="submitRSVP(event)">
+                <div>
+                    <label class="block text-sm mb-1">Guest Name(s)</label>
+                    <input type="text" id="guestName" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gold">
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Phone Number</label>
+                    <input type="tel" id="guestPhone" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gold">
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Number of People Attending</label>
+                    <input type="number" id="guestCount" min="1" max="10" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gold">
+                </div>
+                <button type="submit" class="mt-4 px-6 py-3 bg-gold text-white font-bold rounded-lg hover:bg-yellow-600 transition shadow-lg">Confirm Attendance</button>
+            </form>
+            <p id="rsvpMessage" class="hidden text-green-600 dark:text-green-400 font-bold mt-4"></p>
+        </div>
+
+        <div class="text-center mt-12 pb-8">
+            <button onclick="shareWhatsApp()" class="mb-8 px-6 py-2 bg-[#25D366] text-white rounded-full shadow-lg hover:bg-green-600 transition">
+                <i class="fa-brands fa-whatsapp"></i> Share via WhatsApp
+            </button>
+            <p class="italic text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-8">
+                "With the blessings of Allah, we request the honor of your presence on our special day."
+            </p>
+        </div>
+    </main>
+
+    <section id="adminDashboard" class="hidden max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-800 shadow-2xl rounded-lg mb-20">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-islamicGreen dark:text-gold">Admin Dashboard</h2>
+            <button onclick="toggleAdmin()" class="text-red-500"><i class="fa-solid fa-xmark"></i> Close</button>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+            <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                <p class="text-sm text-gray-500">Total Submissions</p>
+                <p id="totalSubmissions" class="text-3xl font-bold text-gold">0</p>
+            </div>
+            <div class="p-4 bg-islamicGreen/10 dark:bg-gray-700 rounded-lg">
+                <p class="text-sm text-gray-500">Total Guests Expected</p>
+                <p id="totalGuests" class="text-3xl font-bold text-islamicGreen dark:text-gold">0</p>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-islamicGreen text-white">
+                        <th class="p-3">Name</th>
+                        <th class="p-3">Phone</th>
+                        <th class="p-3">Guests</th>
+                    </tr>
+                </thead>
+                <tbody id="rsvpTableBody" class="divide-y divide-gray-200 dark:divide-gray-600">
+                    </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        // --- Theme Toggle ---
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.querySelector('.fa-moon').classList.toggle('fa-sun');
+        }
+
+        // --- Music Toggle ---
+        const audio = document.getElementById("nasheed");
+        let isPlaying = false;
+        function toggleMusic() {
+            if(isPlaying) {
+                audio.pause();
+                document.getElementById('musicBtn').innerHTML = '<i class="fa-solid fa-music"></i> Play Nasheed';
+            } else {
+                audio.play();
+                document.getElementById('musicBtn').innerHTML = '<i class="fa-solid fa-pause"></i> Pause Nasheed';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // --- Countdown Timer ---
+        // Set target date (Format: Year, Month (0-11), Day, Hour, Minute)
+        const targetDate = new Date(2026, 7, 25, 18, 0).getTime(); 
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            document.getElementById("days").innerText = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24))).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.max(0, Math.floor((distance % (1000 * 60)) / 1000)).toString().padStart(2, '0');
+        }, 1000);
+
+        // --- RSVP Logic & Local Storage Database ---
+        function showRSVP(isAttending) {
+            const form = document.getElementById('rsvpForm');
+            const msg = document.getElementById('rsvpMessage');
+            if(isAttending) {
+                form.classList.remove('hidden');
+                msg.classList.add('hidden');
+            } else {
+                form.classList.add('hidden');
+                msg.innerText = "We will miss you! Thank you for letting us know.";
+                msg.classList.remove('hidden');
+            }
+        }
+
+        function submitRSVP(e) {
+            e.preventDefault();
+            const name = document.getElementById('guestName').value;
+            const phone = document.getElementById('guestPhone').value;
+            const count = parseInt(document.getElementById('guestCount').value);
+
+            // Fetch existing data or create array
+            let rsvps = JSON.parse(localStorage.getItem('weddingRSVPs')) || [];
+            rsvps.push({ name, phone, count });
+            
+            // Save back to local storage
+            localStorage.setItem('weddingRSVPs', JSON.stringify(rsvps));
+
+            document.getElementById('rsvpForm').classList.add('hidden');
+            const msg = document.getElementById('rsvpMessage');
+            msg.innerText = "Alhamdulillah! Your RSVP has been received.";
+            msg.classList.remove('hidden');
+            
+            updateAdminDashboard(); // Refresh admin data behind the scenes
+        }
+
+        // --- Admin Dashboard Logic ---
+        function toggleAdmin() {
+            const dashboard = document.getElementById('adminDashboard');
+            dashboard.classList.toggle('hidden');
+            if(!dashboard.classList.contains('hidden')) {
+                updateAdminDashboard();
+                dashboard.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function updateAdminDashboard() {
+            let rsvps = JSON.parse(localStorage.getItem('weddingRSVPs')) || [];
+            let totalGuests = 0;
+            const tbody = document.getElementById('rsvpTableBody');
+            tbody.innerHTML = '';
+
+            rsvps.forEach(rsvp => {
+                totalGuests += rsvp.count;
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td class="p-3">${rsvp.name}</td>
+                        <td class="p-3">${rsvp.phone}</td>
+                        <td class="p-3">${rsvp.count}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalSubmissions').innerText = rsvps.length;
+            document.getElementById('totalGuests').innerText = totalGuests;
+        }
+
+        // --- PDF Generation ---
+        function downloadPDF() {
+            const element = document.getElementById('invite-content');
+            const opt = {
+                margin: 0.5,
+                filename: 'Wedding_Invitation.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // --- WhatsApp Share ---
+        function shareWhatsApp() {
+            const text = encodeURIComponent("You're invited to our Wedding! Check out our invitation and please RSVP: [Your Website Link Here]");
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        // Initialize admin on load
+        updateAdminDashboard();
+    </script>
+</body>
+</html>
